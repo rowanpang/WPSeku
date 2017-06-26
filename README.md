@@ -14,4 +14,6 @@ WPSeku is a black box WordPress vulnerability scanner that can be used to scan r
 ## Usage
 `python --target http://youtargethere.com`
 
-![screen2]()
+![screen2](http://i.imgur.com/jSHWt0P.png)
+![screen3](http://i.imgur.com/gGhmGdz.png)
+![screen4](http://i.imgur.com/bBj8QdN.png)
