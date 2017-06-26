@@ -9,4 +9,4 @@ WPSeku is a black box WordPress vulnerability scanner that can be used to scan r
 # python python wpseku.py
 ```
 
-![screen1](http://i.imgur.com/gHRmsEM.png)
+![screen1](https://camo.githubusercontent.com/ae86d06707213143fb5b9ffafbf2b74a97c22308/687474703a2f2f692e696d6775722e636f6d2f6748526d73454d2e706e67)
