@@ -18,3 +18,6 @@ WPSeku is a black box WordPress vulnerability scanner that can be used to scan r
 ![screen2](http://i.imgur.com/jSHWt0P.png)
 ![screen3](http://i.imgur.com/gGhmGdz.png)
 ![screen4](http://i.imgur.com/bBj8QdN.png)
+
+## License
+WPSeku uses WPScan Vulnerability Database API (https://wpvulndb.com/api). The WPScan Vulnerability Database API is provided for users and developers to make use of our database within their own non-commercial software. All we ask is that if you use this API within your non-commercial software is to credit us accordingly.  
