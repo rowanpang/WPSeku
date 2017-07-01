@@ -22,4 +22,4 @@ WPSeku is a black box WordPress vulnerability scanner that can be used to scan r
 ## License
 WPSeku is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation version 3 of the License. WPSeku is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with WPSeku; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA.
 
-WPSeku uses WPScan Vulnerability Database API (https://wpvulndb.com/api). The WPScan Vulnerability Database API is provided for users and developers to make use of our database within their own non-commercial software. All we ask is that if you use this API within your non-commercial software is to credit us accordingly.  
+WPSeku uses WPScan Vulnerability Database API (https://wpvulndb.com/api).
