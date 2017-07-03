@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import re
-import urllib
+from urllib.parse import urlencode
 
 from lib import wphttp, wpprint
 
@@ -76,7 +76,7 @@ class wpsql:
             for item in params.items():
                 for x in file:
                     param[item[0]] = item[1].replace(item[1], x[0])
-                    enparam = urllib.urlencode(param)
+                    enparam = urlencode(param)
                     url = self.check.checkurl(self.url, "")
                     resp = self.req.send(url, self.method, enparam)
                     data = self.dberror(resp.text)
