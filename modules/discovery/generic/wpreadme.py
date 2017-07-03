@@ -19,25 +19,24 @@
 # along with WPSeku; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from lib import wphttp, wpprint
-
+from lib import wphttp
+from lib import wpprint
 
 class wpreadme:
-    check = wphttp.check()
-    printf = wpprint.wpprint()
+	check = wphttp.check()
+	printf = wpprint.wpprint()
+	def __init__(self,agent,proxy,redirect,url):
+		self.url = url
+		self.req = wphttp.wphttp(agent=agent,proxy=proxy,redirect=redirect)
 
-    def __init__(self, agent, proxy, redirect, url):
-        self.url = url
-        self.req = wphttp.wphttp(agent=agent, proxy=proxy, redirect=redirect)
-
-    def run(self):
-        self.printf.test("Checking readme...")
-        try:
-            url = self.check.checkurl(self.url, '/readme.html')
-            resp = self.req.send(url)
-            if resp.text and resp.status_code == 200:
-                self.printf.plus('readme.html available under: %s' % (url))
-            else:
-                self.printf.erro('readme.html not available')
-        except Exception as error:
-            pass
+	def run(self):
+		self.printf.test("Checking readme...")
+		try:
+			url = self.check.checkurl(self.url,'/readme.html')
+			resp = self.req.send(url)
+			if resp.read() and resp.getcode() == 200:
+				self.printf.plus('readme.html available under: %s'%(url))
+			else:
+				self.printf.erro('readme.html not available')
+		except Exception as error:
+			pass

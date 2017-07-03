@@ -1,2 +1,4 @@
-requests
+urllib2
 urllib
+requests
+json

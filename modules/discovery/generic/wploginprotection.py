@@ -19,27 +19,25 @@
 # along with WPSeku; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from lib import wphttp
+from lib import wpprint
 import re
 
-from lib import wphttp, wpprint
-
-
 class wploginprotection:
-    check = wphttp.check()
-    printf = wpprint.wpprint()
+	check = wphttp.check()
+	printf = wpprint.wpprint()
+	def __init__(self,agent,proxy,redirect,url):
+		self.url = url
+		self.req = wphttp.wphttp(agent=agent,proxy=proxy,redirect=redirect)
 
-    def __init__(self, agent, proxy, redirect, url):
-        self.url = url
-        self.req = wphttp.wphttp(agent=agent, proxy=proxy, redirect=redirect)
-
-    def run(self):
-        self.printf.test('Checking wp-login protection...')
-        try:
-            url = self.check.checkurl(self.url, 'wp-login.php')
-            resp = self.req.send(url)
-            if resp.status_code == 200:
-                self.printf.plus('wp-login not detect protection')
-            elif resp.status_code == 404:
-                self.printf.erro('wp-login detect protection')
-        except Exception as error:
-            pass
+	def run(self):
+		self.printf.test('Checking wp-login protection...')
+		try:
+			url = self.check.checkurl(self.url,'wp-login.php')
+			resp = self.req.send(url)
+			if resp.getcode()== 200:
+				self.printf.plus('wp-login not detect protection')
+			elif resp.getcode() == 404:
+				self.printf.erro('wp-login detect protection')
+		except Exception as error:
+			pass

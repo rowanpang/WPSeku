@@ -19,41 +19,37 @@
 # along with WPSeku; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from lib import wphttp 
+from lib import wpprint
 import re
-from urllib.parse import urlencode
-
-from lib import wphttp, wpprint
-
+import urllib 
 
 class wpxss:
-    check = wphttp.check()
-    printf = wpprint.wpprint()
+	check = wphttp.check()
+	printf = wpprint.wpprint()
+	def __init__(self,agent,proxy,redirect,url,method,payload):
+		self.url = url 
+		self.method = method	
+		self.payload = payload
+		self.req = wphttp.wphttp(agent=agent,proxy=proxy,redirect=redirect)
 
-    def __init__(self, agent, proxy, redirect, url, method, payload):
-        self.url = url
-        self.method = method
-        self.payload = payload
-        self.req = wphttp.wphttp(agent=agent, proxy=proxy, redirect=redirect)
-
-    def run(self):
-        self.printf.test("Testing XSS vulns...")
-        print("")
-        params = dict([x.split("=") for x in self.payload.split("&")])
-        param = {}
-        db = open("data/wpxss.txt", "rb")
-        file = [x.split("\n") for x in db]
-        try:
-            for item in params.items():
-                for x in file:
-                    param[item[0]] = item[1].replace(item[1], x[0])
-                    enparam = urlencode(param)
-                    url = self.check.checkurl(self.url, "")
-                    resp = self.req.send(url, self.method, enparam)
-                    if re.search(x[0], resp.text) and resp.status_code == 200:
-                        self.printf.erro("[%s][%s][vuln] %s" % (
-                            resp.status_code, self.method, resp.geturl()))
-                    else:
-                        self.printf.plus("[%s][%s][not vuln] %s" % (
-                            resp.status_code, self.method, resp.geturl()))
-        except Exception as error:
-            pass
+	def run(self):
+		self.printf.test("Testing XSS vulns...")
+		print ""
+		params = dict([x.split("=") for x in self.payload.split("&")])
+		param = {}
+		db = open("data/wpxss.txt","rb")
+		file = [x.split("\n") for x in db]
+		try:
+			for item in params.items():
+				for x in file:
+					param[item[0]]=item[1].replace(item[1],x[0])
+					enparam = urllib.urlencode(param)
+					url = self.check.checkurl(self.url,"")
+					resp = self.req.send(url,self.method,enparam)
+					if re.search(x[0],resp.read()) and resp.getcode() == 200:
+						self.printf.erro("[%s][%s][vuln] %s"%(resp.getcode(),self.method,resp.geturl()))
+					else:
+						self.printf.plus("[%s][%s][not vuln] %s"%(resp.getcode(),self.method,resp.geturl()))
+		except Exception as error:
+			pass
