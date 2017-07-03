@@ -164,7 +164,7 @@ class WPSeku(object):
         # xss attack
         if self.xss == True:
             if not self.method:
-                sys.exit(self.printf.erro('Method not exisits!'))
+                sys.exit(self.printf.erro('Method not exists!'))
             if not self.query:
                 sys.exit(self.printf.erro('Not found query'))
             wpxss.wpxss(self.agent, self.proxy, self.redirect,
@@ -173,7 +173,7 @@ class WPSeku(object):
         # sql attack
         if self.sql == True:
             if not self.method:
-                sys.exit(self.printf.erro('Method not exisits!'))
+                sys.exit(self.printf.erro('Method not exists!'))
             if not self.query:
                 sys.exit(self.printf.erro('Not found query'))
             wpsql.wpsql(self.agent, self.proxy, self.redirect,
@@ -182,7 +182,7 @@ class WPSeku(object):
         # lfi attack
         if self.lfi == True:
             if not self.method:
-                sys.exit(self.printf.erro('Method not exisits!'))
+                sys.exit(self.printf.erro('Method not exists!'))
             if not self.query:
                 sys.exit(self.printf.erro('Not found query'))
             wplfi.wplfi(self.agent, self.proxy, self.redirect,
