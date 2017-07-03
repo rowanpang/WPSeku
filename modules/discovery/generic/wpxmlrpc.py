@@ -19,25 +19,28 @@
 # along with WPSeku; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from lib import wphttp 
-from lib import wpprint
 import re
 
-class wpxmlrpc:
-	check = wphttp.check()
-	printf = wpprint.wpprint()
-	def __init__(self,agent,proxy,redirect,url):
-		self.url = url
-		self.req = wphttp.wphttp(agent=agent,proxy=proxy,redirect=redirect)
+from lib import wphttp, wpprint
 
-	def run(self):
-		self.printf.test("Checking xmlrpc...")
-		try:
-			url = self.check.checkurl(self.url,'/xmlrpc.php')
-			resp = self.req.send(url)
-			if resp.read() and resp.getcode() == 405:
-				self.printf.plus('XML-RPC Interface available under: %s'%(url))
-			else:
-				self.printf.erro('XML-RPC not available')
-		except Exception as error:
-			pass
+
+class wpxmlrpc:
+    check = wphttp.check()
+    printf = wpprint.wpprint()
+
+    def __init__(self, agent, proxy, redirect, url):
+        self.url = url
+        self.req = wphttp.wphttp(agent=agent, proxy=proxy, redirect=redirect)
+
+    def run(self):
+        self.printf.test("Checking xmlrpc...")
+        try:
+            url = self.check.checkurl(self.url, '/xmlrpc.php')
+            resp = self.req.send(url)
+            if resp.text and resp.status_code == 405:
+                self.printf.plus(
+                    'XML-RPC Interface available under: %s' % (url))
+            else:
+                self.printf.erro('XML-RPC not available')
+        except Exception as error:
+            pass

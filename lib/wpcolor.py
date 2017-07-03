@@ -19,22 +19,23 @@
 # along with WPSeku; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+
 class wpcolor:
-	
-	def red(self,num):
-		return '\x1b['+str(num)+';31m'
 
-	def green(self,num):
-		return '\x1b['+str(num)+';32m'
+    def red(self, num):
+        return '\x1b[' + str(num) + ';31m'
 
-	def yellow(self,num):
-		return '\x1b['+str(num)+';33m'
+    def green(self, num):
+        return '\x1b[' + str(num) + ';32m'
 
-	def blue(self,num):
-		return '\x1b['+str(num)+';34m'
+    def yellow(self, num):
+        return '\x1b[' + str(num) + ';33m'
 
-	def white(self,num):
-		return '\x1b['+str(num)+';38m'
+    def blue(self, num):
+        return '\x1b[' + str(num) + ';34m'
 
-	def reset(self):
-		return '\x1b[0m'
+    def white(self, num):
+        return '\x1b[' + str(num) + ';38m'
+
+    def reset(self):
+        return '\x1b[0m'

@@ -19,30 +19,34 @@
 # along with WPSeku; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from lib import wphttp
-from lib import wpprint
 import re
+
+from lib import wphttp, wpprint
+
 
 class wplisting:
     check = wphttp.check()
     printf = wpprint.wpprint()
-    def __init__(self,agent,proxy,redirect,url):
+
+    def __init__(self, agent, proxy, redirect, url):
         self.url = url
-        self.req = wphttp.wphttp(agent=agent,proxy=proxy,redirect=redirect)
+        self.req = wphttp.wphttp(agent=agent, proxy=proxy, redirect=redirect)
 
     def run(self):
         self.printf.test('Checking dir listing...')
-        dir = ['/wp-admin','/wp-includes','/wp-content/uploads','/wp-content/plugins','/wp-content/themes']
+        dir = ['/wp-admin', '/wp-includes', '/wp-content/uploads',
+               '/wp-content/plugins', '/wp-content/themes']
         for i in dir:
             try:
-                url = self.check.checkurl(self.url,i)
+                url = self.check.checkurl(self.url, i)
                 resp = self.req.send(url)
-                if resp.read() and resp.getcode() == 200:
-                    if re.search('Index of',resp.read()):
-                        self.printf.plus('dir %s listing enabled under: %s'%(i,url))
+                if resp.text and resp.status_code == 200:
+                    if re.search('Index of', resp.text):
+                        self.printf.plus(
+                            'dir %s listing enabled under: %s' % (i, url))
                     else:
-                        self.printf.erro('dir %s not listing enabled'%(i))
+                        self.printf.erro('dir %s not listing enabled' % (i))
                 else:
-                    self.printf.erro('dir %s not listing enabled'%(i))
+                    self.printf.erro('dir %s not listing enabled' % (i))
             except Exception as error:
                 pass
