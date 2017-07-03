@@ -42,9 +42,9 @@ class wpxmlrpc:
         for x in passwd:
             payload = ("""<methodCall><methodName>wp.getUsersBlogs</methodName><params>
                 <param><value><string>""" + self.user + """</string></value></param>
-                <param><value><string>""" + str(x.split('\n')[0]) + """</string></value></param></params></methodCall>""")
+                <param><value><string>""" + str(x).split('\n')[0] + """</string></value></param></params></methodCall>""")
             self.printf.test("Trying Credentials: \"%s\" - \"%s\"" %
-                             (self.user, x.split('\n')[0]))
+                             (self.user, str(x).split('\n')[0]))
             try:
                 url = self.check.checkurl(self.url, 'xmlrpc.php')
                 resp = self.req.send(url, method="POST", payload=payload)
