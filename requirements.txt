@@ -1,4 +1,2 @@
-urllib2
-urllib
 requests
-json
+urllib

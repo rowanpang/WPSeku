@@ -19,25 +19,29 @@
 # along with WPSeku; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from lib import wphttp
-from lib import wpprint
 import re
 
-class wpfpd:
-	check = wphttp.check()
-	printf = wpprint.wpprint()
-	def __init__(self,agent,proxy,redirect,url):
-		self.url = url 
-		self.req = wphttp.wphttp(agent=agent,proxy=proxy,redirect=redirect)
+from lib import wphttp, wpprint
 
-	def run(self,theme):
-		file = ["/404.php","/archive.php","/author.php","/comments.php","/footer.php","/functions.php","/header.php",
-		"/image.php","/page.php","/search.php","/single.php","/archive.php"]
-		for i in file:
-			try:
-				url = self.check.checkurl(self.url,"/wp-content/themes/%s%s"%(theme,i)) 
-				resp = self.req.send(url)
-				if re.search('Fatal error',resp.read()):
-					self.printf.ipri('Full Path Disclosure: %s'%(url),color="r")
-			except Exception as error:
-				pass
+
+class wpfpd:
+    check = wphttp.check()
+    printf = wpprint.wpprint()
+
+    def __init__(self, agent, proxy, redirect, url):
+        self.url = url
+        self.req = wphttp.wphttp(agent=agent, proxy=proxy, redirect=redirect)
+
+    def run(self, theme):
+        file = ["/404.php", "/archive.php", "/author.php", "/comments.php", "/footer.php", "/functions.php", "/header.php",
+                "/image.php", "/page.php", "/search.php", "/single.php", "/archive.php"]
+        for i in file:
+            try:
+                url = self.check.checkurl(
+                    self.url, "/wp-content/themes/%s%s" % (theme, i))
+                resp = self.req.send(url)
+                if re.search('Fatal error', resp.text):
+                    self.printf.ipri('Full Path Disclosure: %s' %
+                                     (url), color="r")
+            except Exception as error:
+                pass

@@ -19,34 +19,25 @@
 # along with WPSeku; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import wpconfig
-import wpcrossdomain
-import wpheaders
-import wphtaccess
-import wplicense
-import wplisting
-import wpreadme
-import wprobots
-import wpsitemap
-import wpversion 
-import wpxmlrpc
-import wpfpd
-import wpwaf
-import wploginprotection as wplp
+from . import wploginprotection as wplp
+from . import (wpconfig, wpcrossdomain, wpfpd, wpheaders, wphtaccess,
+               wplicense, wplisting, wpreadme, wprobots, wpsitemap, wpversion,
+               wpwaf, wpxmlrpc)
+
 
 class wpgeneric:
-	def run(self,agent,proxy,redirect,url):
-		wpsitemap.wpsitemap(agent,proxy,redirect,url).run()
-		wplicense.wplicense(agent,proxy,redirect,url).run()
-		wprobots.wprobots(agent,proxy,redirect,url).run()
-		wpcrossdomain.wpcrossdomain(agent,proxy,redirect,url).run()
-		wpreadme.wpreadme(agent,proxy,redirect,url).run()
-		wphtaccess.wphtaccess(agent,proxy,redirect,url).run()
-		wpxmlrpc.wpxmlrpc(agent,proxy,redirect,url).run()
-		wpfpd.wpfpd(agent,proxy,redirect,url).run()
-		wpconfig.wpconfig(agent,proxy,redirect,url).run()
-		wplisting.wplisting(agent,proxy,redirect,url).run()
-		wpheaders.wpheaders(agent,proxy,redirect,url).run()
-		wpwaf.wpwaf(agent,proxy,redirect,url).run()
-		wplp.wploginprotection(agent,proxy,redirect,url).run()
-		wpversion.wpversion(agent,proxy,redirect,url).run()
+    def run(self, agent, proxy, redirect, url):
+        wpsitemap.wpsitemap(agent, proxy, redirect, url).run()
+        wplicense.wplicense(agent, proxy, redirect, url).run()
+        wprobots.wprobots(agent, proxy, redirect, url).run()
+        wpcrossdomain.wpcrossdomain(agent, proxy, redirect, url).run()
+        wpreadme.wpreadme(agent, proxy, redirect, url).run()
+        wphtaccess.wphtaccess(agent, proxy, redirect, url).run()
+        wpxmlrpc.wpxmlrpc(agent, proxy, redirect, url).run()
+        wpfpd.wpfpd(agent, proxy, redirect, url).run()
+        wpconfig.wpconfig(agent, proxy, redirect, url).run()
+        wplisting.wplisting(agent, proxy, redirect, url).run()
+        wpheaders.wpheaders(agent, proxy, redirect, url).run()
+        wpwaf.wpwaf(agent, proxy, redirect, url).run()
+        wplp.wploginprotection(agent, proxy, redirect, url).run()
+        wpversion.wpversion(agent, proxy, redirect, url).run()

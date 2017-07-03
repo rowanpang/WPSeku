@@ -19,38 +19,42 @@
 # along with WPSeku; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from lib import wphttp 
-from lib import wpprint
 import re
-import urllib 
+from urllib.parse import urlencode
+
+from lib import wphttp, wpprint
+
 
 class wplfi:
-	check = wphttp.check()
-	printf = wpprint.wpprint()
-	def __init__(self,agent,proxy,redirect,url,method,payload):
-		self.url = url
-		self.method = method
-		self.payload = payload 
-		self.req = wphttp.wphttp(agent=agent,proxy=proxy,redirect=redirect)
+    check = wphttp.check()
+    printf = wpprint.wpprint()
 
-	def run(self):
-		self.printf.test('Testing LFI vulns...')
-		print ""
-		params = dict([x.split("=") for x in self.payload.split("&")])
-		param = {}
-		db = open("data/wplfi.txt","rb")
-		file = [x.split("\n") for x in db]
-		try:
-			for item in params.items():
-				for x in file:
-					param[item[0]]=item[1].replace(item[1],x[0])
-					enparam = urllib.urlencode(param)
-					url = self.check.checkurl(self.url,"")
-					resp = self.req.send(url,self.method,enparam)
-					if re.search('define (^\S*)',resp.read()) and resp.getcode() == 200:
-						self.printf.erro("[%s][%s][vuln] %s"%(resp.getcode(),self.method,resp.geturl()))
-					else:
-						self.printf.plus("[%s][%s][not vuln] %s"%(resp.getcode(),self.method,resp.geturl()))
-					param[item[0]] = item[1].replace(x[0],item[1])
-		except Exception as error:
-			pass
+    def __init__(self, agent, proxy, redirect, url, method, payload):
+        self.url = url
+        self.method = method
+        self.payload = payload
+        self.req = wphttp.wphttp(agent=agent, proxy=proxy, redirect=redirect)
+
+    def run(self):
+        self.printf.test('Testing LFI vulns...')
+        print("")
+        params = dict([x.split("=") for x in self.payload.split("&")])
+        param = {}
+        db = open("data/wplfi.txt", "rb")
+        file = [x.split("\n") for x in db]
+        try:
+            for item in params.items():
+                for x in file:
+                    param[item[0]] = item[1].replace(item[1], x[0])
+                    enparam = urlencode(param)
+                    url = self.check.checkurl(self.url, "")
+                    resp = self.req.send(url, self.method, enparam)
+                    if re.search('define (^\S*)', resp.text) and resp.status_code == 200:
+                        self.printf.erro("[%s][%s][vuln] %s" % (
+                            resp.status_code, self.method, resp.geturl()))
+                    else:
+                        self.printf.plus("[%s][%s][not vuln] %s" % (
+                            resp.status_code, self.method, resp.geturl()))
+                    param[item[0]] = item[1].replace(x[0], item[1])
+        except Exception as error:
+            pass
