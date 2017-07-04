@@ -105,7 +105,7 @@ class WPSeku(object):
 		if netloc == "":
 			return "http://"+path
 		else:
-			return scheme+"://"+netloc
+			return scheme+"://"+netloc+path
 
 	def Main(self):
 		if len(sys.argv) <= 2:
