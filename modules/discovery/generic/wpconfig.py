@@ -35,8 +35,9 @@ class wpconfig:
 		try:
 			url = self.check.checkurl(self.url,'/wp-config.php')
 			resp = self.req.send(url)
-			if resp.read() and resp.getcode() == 200:
-				if re.search('\S+define(\S+,*)',resp.read()):
+			html = resp.read()
+			if html and resp.getcode() == 200:
+				if re.search('\S+define(\S+,*)',html):
 					self.printf.plus('wp-config available under: %s'%(url))
 				else:
 					self.printf.erro('wp-config not available')
