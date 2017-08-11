@@ -37,8 +37,9 @@ class wplisting:
             try:
                 url = self.check.checkurl(self.url,i)
                 resp = self.req.send(url)
-                if resp.read() and resp.getcode() == 200:
-                    if re.search('Index of',resp.read()):
+                html = resp.read()
+                if html and resp.getcode() == 200:
+                    if re.search('Index of',html):
                         self.printf.plus('dir %s listing enabled under: %s'%(i,url))
                     else:
                         self.printf.erro('dir %s not listing enabled'%(i))
