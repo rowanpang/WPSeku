@@ -71,16 +71,18 @@ class wpusers:
                                 url = self.check.checkurl(self.url,"/?author="+str(x))
                                 self.printf.ipri(" %s" %(url),color="g")
                                 resp = self.req.send(url)
+                                # print resp.getcode()
 				if resp.getcode() == 200:
 					html = resp.read()
                                         user = re.findall('author author-(.+?) ',html)
-                                        user_= re.findall('/author/(.+?)/feed/',html)
+                                        user_= re.findall(r'/author/(\w+?)/',html)
                                         if user:
                                                 self.usersAuthor.extend(user)
                                         if user_:
                                                 self.usersAuthor.extend(user_)
                                         # print self.usersAuthor
                         except Exception,e:
+                                # print 'in except'
                                 pass
 
 

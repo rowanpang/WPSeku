@@ -149,7 +149,7 @@ class WPSeku(object):
 		self.printf.plus('Target: %s'%self.target)
 		self.printf.plus('Starting: %s\n'%(time.strftime('%d/%m/%Y %H:%M:%S')))
 		print self.agent
-		if not self.agent:self.agent = 'Mozilla/5.0'
+		if not self.agent:self.agent = 'Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0'
 		if not self.proxy:self.proxy=None
 		if not self.cookie:self.cookie=None
 		if not self.redirect:self.redirect=False
