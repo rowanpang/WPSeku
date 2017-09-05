@@ -50,6 +50,7 @@ class wpxmlrpc:
 					self.printf.plus('Valid Credentials: \"%s\" - \"%s\"'%(self.user,x.split('\n')[0]))
 				elif re.search('<name>isAdmin</name><value><boolean>1</boolean>',html,re.I):
 					self.printf.plus('Valid ADMIN Credentials: \"%s\" - \"%s\"'%(self.user,x.split('\n')[0]))
+                                        break
 				else:
 					self.printf.erro('Invalid Credentials: \"%s\" - \"%s\"'%(self.user,x.split('\n')[0]))
 			except Exception as error:

@@ -29,32 +29,85 @@ class wpusers:
 	def __init__(self,agent,proxy,redirect,url):
 		self.url = url 
 		self.req = wphttp.wphttp(agent=agent,proxy=proxy,redirect=redirect)
+                self.usersFeed = []
+                self.usersJson = []
+                self.usersAuthor = []
+
+        def wayjson(self):
+                # Enumeration users via wp-json
+                # https://www.exploit-db.com/exploits/41497/
+                try:
+                        url = self.check.checkurl(self.url,"/wp-json/wp/v2/users")
+                        self.printf.ipri(" %s" %(url),color="g")
+                        resp = self.req.send(url)
+                        if resp.getcode() == 200:
+                                html = resp.read()
+                                user = json.loads(html,"utf-8")
+                                for x in range(len(user)):
+                                        self.usersJson.append(user[x]["name"])
+                        # print self.usersJson
+                except Exception,e:
+                        pass
+
+        def wayfeed(self):
+                # Enumeration users via /?feed=rss2
+                try:
+                        url = self.check.checkurl(self.url,"/?feed=rss2")
+                        self.printf.ipri(" %s" %(url),color="g")
+                        resp = self.req.send(url)
+                        if resp.getcode() == 200:
+                                html = resp.read()
+                                user = re.findall('<dc:creator><!\[CDATA\[(.+?)\]\]></dc:creator>',html)
+                        if user:
+                                self.usersFeed.extend(user)
+                        # print self.usersFeed
+                except Exception,e:
+                        pass
+
+        def wayauthor(self):
+                # Enumeration users via /?author=
+                for x in range(0,15):
+                        try:
+                                url = self.check.checkurl(self.url,"/?author="+str(x))
+                                self.printf.ipri(" %s" %(url),color="g")
+                                resp = self.req.send(url)
+				if resp.getcode() == 200:
+					html = resp.read()
+                                        user = re.findall('author author-(.+?) ',html)
+                                        user_= re.findall('/author/(.+?)/feed/',html)
+                                        if user:
+                                                self.usersAuthor.extend(user)
+                                        if user_:
+                                                self.usersAuthor.extend(user_)
+                                        # print self.usersAuthor
+                        except Exception,e:
+                                pass
+
 
 	def run(self):
 		self.printf.test("Enumeration usernames...")
-		l = []
-		for x in range(0,15):
-			try:
-				url = self.check.checkurl(self.url,'/?author=%s'%x)
-				resp = self.req.send(url)
-				if resp.getcode() == 200:
-					html = resp.read()
-					login = re.findall('/author/(.+?)/',html)
-					l.append(login)
-			except Exception as error:
-				print error
+
+                self.wayjson()
+                self.wayfeed()
+                self.wayauthor()
+
 		login_new = []
-		for i in l:
-			if i not in login_new:
-				login_new.append(i)
+
+                self.printf.ipri(" names in [/wp-json/wp/v2/users,/?feed=rss2,/?author=x]:",color="g")
+                for l in self.usersJson,self.usersFeed,self.usersAuthor:
+                        self.printf.ipri("   %s" %(l),color="g")
+                        for i in l: 
+                                if i not in login_new:
+                                        login_new.append(i)
 		##################
 		try:
 			if login_new != []:
 				for a in range(len(login_new)):
-					if "%20" in login_new[a][0]:
-						self.printf.ipri(" ID: %s   |  Login: %s"%(a,login_new[a][0].replace('%20',' ')),color="g")
+                                        u = login_new[a]
+                                        if "%20" in u: 
+						self.printf.ipri(" ID: %s   |  Login: %s"%(a,u.replace('%20',' ')),color="g")
 					else:
-						self.printf.ipri(" ID: %s  |  Login: %s"%(a,login_new[a][0]),color="g")
+						self.printf.ipri(" ID: %s  |  Login: %s"%(a,u),color="g")
 				print ""
 			if login_new == []:
 				self.printf.ipri("Not found usernames",color="r")
