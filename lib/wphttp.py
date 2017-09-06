@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import urllib2 
+import ssl
 
 class wphttp:
 	
@@ -33,7 +34,8 @@ class wphttp:
 		if headers is None: headers = {}
 		# add user-agent
 		headers['User-agent'] = self.agent
-		handlers = [urllib2.HTTPHandler(),urllib2.HTTPSHandler()]
+                sslUnVerify = ssl._create_unverified_context()
+		handlers = [urllib2.HTTPHandler(),urllib2.HTTPSHandler(context=sslUnVerify)]
 
 		if cookie != None:
 			handlers.append(urllib2.HTTPCookieProcessor(cookie))
